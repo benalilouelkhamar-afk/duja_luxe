@@ -35,9 +35,9 @@ export const settings = {
 
   contact: {
     /** WhatsApp number in international format, digits only (no +, no spaces). */
-    whatsapp: "212775354815", // TODO: confirm with the owner (seen in posts as 0775354815)
+    whatsapp: "212651508257",
     /** Same number, formatted for display */
-    whatsappDisplay: "0775 35 48 15",
+    whatsappDisplay: "06 51 50 82 57",
     instagram: "https://www.instagram.com/duja.luxe/",
     instagramHandle: "@duja.luxe",
     /** TikTok profile URL, or null to hide the TikTok button */
@@ -159,8 +159,8 @@ export const settings = {
     {
       q: { ar: "كيفاش ندير الطلب؟", fr: "Comment commander ?" },
       a: {
-        ar: "اختاري المنتج، اللون والمقاس، زيديه للسلة، عمري المعلومات وضغطي على «تأكيد الطلب» — غادي يتحل واتساب بالطلب واجد ✨",
-        fr: "Choisissez l'article, la couleur et la taille, ajoutez au panier, remplissez le formulaire puis « Confirmer » — WhatsApp s'ouvre avec la commande prête ✨",
+        ar: "اختاري اللون والمقاس، ضغطي على «اطلبي الآن»، عمري الاسم والهاتف والمدينة والعنوان — غادي يتحل واتساب بالطلب مكتوب، غير ضغطي «إرسال» ✨",
+        fr: "Choisissez couleur et taille, appuyez sur « Commander maintenant », remplissez nom, téléphone, ville et adresse — WhatsApp s'ouvre avec la commande écrite, il ne reste qu'à appuyer sur Envoyer ✨",
       },
     },
   ] as { q: Bilingual; a: Bilingual }[],

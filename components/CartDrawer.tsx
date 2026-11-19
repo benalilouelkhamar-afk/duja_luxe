@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { useCart } from "@/lib/cart";
+import { toItems, useCart } from "@/lib/cart";
 import { useLang } from "@/lib/i18n";
 import { CartLines } from "./CartLines";
 import { CartSummary } from "./CartSummary";
-import { BagIcon, CloseIcon } from "./Icons";
+import { BagIcon, CloseIcon, WhatsAppIcon } from "./Icons";
+import { formatPrice } from "@/lib/format";
 
 export function CartDrawer() {
-  const { drawerOpen, setDrawerOpen, lines, count } = useCart();
+  const { drawerOpen, setDrawerOpen, lines, count, total, openOrder } = useCart();
   const { t, lang } = useLang();
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -76,13 +77,17 @@ export function CartDrawer() {
             </div>
             <div className="space-y-3 border-t border-plum/15 bg-white/60 p-5">
               <CartSummary />
-              <Link
-                href="/cart"
-                onClick={() => setDrawerOpen(false)}
-                className="block rounded-full bg-plum py-3.5 text-center font-bold text-white transition hover:bg-plum-800"
+              <button
+                type="button"
+                onClick={() => openOrder({ items: toItems(lines), fromCart: true })}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-[#1f7a4c] px-4 py-3.5 font-bold text-white transition hover:bg-[#186640]"
               >
-                {t("checkout")}
-              </Link>
+                <WhatsAppIcon />
+                <span>
+                  {t("order_now")}
+                  {total !== null && <span className="whitespace-nowrap"> · {formatPrice(total, lang)}</span>}
+                </span>
+              </button>
               <button type="button" onClick={() => setDrawerOpen(false)} className="block w-full text-center text-sm font-medium text-plum-800 underline-offset-4 hover:underline">
                 {t("continue_shopping")}
               </button>

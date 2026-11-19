@@ -39,7 +39,6 @@ export const dict = {
   view_details: { ar: "عرض التفاصيل", fr: "Voir les détails" },
   add_to_cart: { ar: "أضيفي إلى السلة", fr: "Ajouter au panier" },
   price_whatsapp: { ar: "السعر عبر واتساب", fr: "Prix sur WhatsApp" },
-  ask_price: { ar: "اسألي على الثمن", fr: "Demander le prix" },
   badge_new: { ar: "جديد", fr: "Nouveau" },
   badge_limited: { ar: "كمية محدودة", fr: "Quantité limitée" },
   badge_out: { ar: "نفذت الكمية", fr: "Épuisé" },
@@ -89,7 +88,6 @@ export const dict = {
   quantity: { ar: "الكمية", fr: "Quantité" },
   size_guide: { ar: "دليل المقاسات", fr: "Guide des tailles" },
   choose_size: { ar: "اختاري المقاس من فضلك", fr: "Veuillez choisir une taille" },
-  order_whatsapp: { ar: "اطلبي مباشرة عبر واتساب", fr: "Commander sur WhatsApp" },
   description: { ar: "الوصف", fr: "Description" },
   delivery_payment: { ar: "التوصيل والدفع", fr: "Livraison et paiement" },
   you_may_like: { ar: "قد يعجبك أيضاً", fr: "Vous aimerez aussi" },
@@ -97,6 +95,14 @@ export const dict = {
   decrease: { ar: "نقص", fr: "Diminuer" },
   increase: { ar: "زيد", fr: "Augmenter" },
   out_of_stock_msg: { ar: "هاد القطعة نفذت حالياً — سولينا على واتساب على الرجوع ديالها", fr: "Article épuisé — demandez-nous sur WhatsApp quand il revient" },
+
+  // Order
+  order_now: { ar: "اطلبي الآن", fr: "Commander maintenant" },
+  order_hint: {
+    ar: "غادي يتحل واتساب بالطلب مكتوب كامل، غير ضغطي «إرسال» 🤍",
+    fr: "WhatsApp s'ouvre avec la commande déjà écrite, il ne reste qu'à appuyer sur Envoyer 🤍",
+  },
+  reference: { ar: "رقم الطلب", fr: "Référence" },
 
   // Cart
   your_cart: { ar: "سلتك", fr: "Votre panier" },
@@ -107,8 +113,6 @@ export const dict = {
   total_whatsapp: { ar: "يُحدَّد عبر واتساب", fr: "Confirmé sur WhatsApp" },
   delivery: { ar: "التوصيل", fr: "Livraison" },
   free: { ar: "مجاني", fr: "Gratuite" },
-  checkout: { ar: "إتمام الطلب", fr: "Finaliser la commande" },
-  view_cart: { ar: "عرض السلة", fr: "Voir le panier" },
   checkout_title: { ar: "معلومات التوصيل", fr: "Informations de livraison" },
   full_name: { ar: "الاسم الكامل", fr: "Nom complet" },
   phone: { ar: "رقم الهاتف", fr: "Téléphone" },
@@ -119,7 +123,6 @@ export const dict = {
   address: { ar: "العنوان", fr: "Adresse" },
   note: { ar: "ملاحظة", fr: "Remarque" },
   optional: { ar: "(اختياري)", fr: "(facultatif)" },
-  confirm_order: { ar: "تأكيد الطلب عبر واتساب", fr: "Confirmer sur WhatsApp" },
   err_name: { ar: "كتبي الاسم الكامل", fr: "Indiquez votre nom complet" },
   err_phone: { ar: "رقم غير صحيح (مثال: 0612345678 أو 212612345678+)", fr: "Numéro invalide (ex. 0612345678 ou +212612345678)" },
   err_city: { ar: "اختاري المدينة", fr: "Choisissez la ville" },
@@ -127,12 +130,13 @@ export const dict = {
   cod_reminder: { ar: "الدفع عند الاستلام · غادي نأكدو معاك الطلب على واتساب", fr: "Paiement à la livraison · confirmation sur WhatsApp" },
 
   // Thanks
-  thanks_title: { ar: "شكراً! 🤍", fr: "Merci ! 🤍" },
+  thanks: { ar: "شكراً", fr: "Merci" },
   thanks_text: {
-    ar: "وصلنا طلبك على واتساب وغادي نأكدو معاك قريباً 🤍",
-    fr: "Nous avons reçu votre commande sur WhatsApp, nous vous confirmons très vite 🤍",
+    ar: "تحل واتساب بالطلب ديالك. غير ضغطي «إرسال» وغادي نأكدو معاك قريباً 🤍",
+    fr: "WhatsApp s'est ouvert avec votre commande. Appuyez sur Envoyer, nous vous confirmons très vite 🤍",
   },
-  thanks_reopen: { ar: "واتساب ما تحلش؟ ضغطي هنا", fr: "WhatsApp ne s'est pas ouvert ? Cliquez ici" },
+  reopen_whatsapp: { ar: "عاودي فتح واتساب", fr: "Rouvrir WhatsApp" },
+  reopen_hint: { ar: "واتساب ما تحلش؟", fr: "WhatsApp ne s'est pas ouvert ?" },
   back_home: { ar: "الرجوع للرئيسية", fr: "Retour à l'accueil" },
 
   // Pages

@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { getProduct, products, type ColorId } from "@/data/products";
+import { colors, getProduct, imagesFor, products, type ColorId } from "@/data/products";
 import { settings } from "@/data/settings";
 import { useCart } from "@/lib/cart";
+import { formatPrice } from "@/lib/format";
 import { useLang } from "@/lib/i18n";
-import { directMessage } from "@/lib/order";
 import { waLink } from "@/lib/whatsapp";
 import { Badges } from "./Badges";
-import { CashIcon, ChevronIcon, RulerIcon, TruckIcon, WhatsAppIcon } from "./Icons";
+import { BagIcon, CashIcon, ChevronIcon, RulerIcon, TruckIcon, WhatsAppIcon } from "./Icons";
 import { ColorPicker, SizePicker } from "./OptionPickers";
 import { PriceTag } from "./PriceTag";
 import { ProductCard } from "./ProductCard";
@@ -21,7 +21,7 @@ import { SizeGuideModal } from "./SizeGuide";
 export function ProductDetail({ slug }: { slug: string }) {
   const product = getProduct(slug)!;
   const { t, tr, lang } = useLang();
-  const { add, setDrawerOpen } = useCart();
+  const { add, setDrawerOpen, openOrder } = useCart();
   const [color, setColor] = useState<ColorId | null>(product.colors[0] ?? null);
   const [size, setSize] = useState<string | null>(product.sizes.length === 1 ? product.sizes[0] : null);
   const [qty, setQty] = useState(1);
@@ -31,8 +31,10 @@ export function ProductDetail({ slug }: { slug: string }) {
   const track = useRef<HTMLDivElement>(null);
   const sizeRef = useRef<HTMLDivElement>(null);
 
-  const images = product.images.length ? product.images : [undefined];
+  const photos = imagesFor(product, color);
+  const images = photos.length ? photos : [undefined];
   const name = tr(product.name);
+  const colorName = color ? tr(colors[color].label) : "";
 
   const related = [
     ...products.filter((p) => p.id !== product.id && p.category === product.category),
@@ -47,16 +49,17 @@ export function ProductDetail({ slug }: { slug: string }) {
     return false;
   };
 
-  const onAdd = () => {
+  const item = () => ({ productId: product.id, color, size: size!, qty });
+
+  const onOrder = () => {
     if (!requireSize()) return;
-    add({ productId: product.id, color, size: size!, qty });
-    setDrawerOpen(true);
+    openOrder({ items: [item()], fromCart: false });
   };
 
-  const onWhatsApp = () => {
+  const onAdd = () => {
     if (!requireSize()) return;
-    const url = `${window.location.origin}/produit/${product.slug}`;
-    window.open(waLink(directMessage({ productId: product.id, color, size: size!, qty }, lang, url)), "_blank", "noopener");
+    add(item());
+    setDrawerOpen(true);
   };
 
   const goTo = (k: number) => {
@@ -64,6 +67,20 @@ export function ProductDetail({ slug }: { slug: string }) {
     const el = track.current;
     if (el) el.scrollTo({ left: (lang === "ar" ? -1 : 1) * k * el.clientWidth, behavior: "smooth" });
   };
+
+  const changeColor = (c: ColorId) => {
+    setColor(c);
+    // show the first photo of the new color
+    setImg(0);
+    track.current?.scrollTo({ left: 0 });
+  };
+
+  const orderLabel = (
+    <>
+      {t("order_now")}
+      {product.price !== null && <span className="whitespace-nowrap"> · {formatPrice(product.price * qty, lang)}</span>}
+    </>
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-6 pt-6 sm:px-6 sm:pt-10">
@@ -82,31 +99,43 @@ export function ProductDetail({ slug }: { slug: string }) {
       </nav>
 
       <div className="grid gap-6 md:grid-cols-2 md:gap-10">
-        {/* Gallery */}
+        {/* Gallery — follows the selected color */}
         <div className="md:sticky md:top-24 md:self-start">
           <div className="glass relative rounded-[28px] p-2.5">
             <div
+              key={color ?? "-"}
               ref={track}
-              className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto rounded-[22px]"
+              className="no-scrollbar flex animate-pop snap-x snap-mandatory overflow-x-auto rounded-[22px]"
               onScroll={(e) => {
                 const el = e.currentTarget;
                 setImg(Math.round(Math.abs(el.scrollLeft) / el.clientWidth));
               }}
-              aria-label={name}
+              aria-label={colorName ? `${name} — ${colorName}` : name}
             >
               {images.map((src, k) => (
-                <div key={k} className="relative aspect-[4/5] w-full shrink-0 snap-center bg-[#efe3f1]">
-                  <ProductImage src={src} alt={`${name} — ${t("photo_of")} ${k + 1}`} label={name} priority={k === 0} sizes="(min-width:768px) 45vw, 92vw" />
+                <div key={`${src}-${k}`} className="relative aspect-[4/5] w-full shrink-0 snap-center bg-[#efe3f1]">
+                  <ProductImage
+                    src={src}
+                    alt={`${name}${colorName ? ` — ${colorName}` : ""} — ${t("photo_of")} ${k + 1}`}
+                    label={name}
+                    priority={k === 0}
+                    sizes="(min-width:768px) 45vw, 92vw"
+                  />
                 </div>
               ))}
             </div>
             <Badges product={product} className="absolute start-5 top-5" />
+            {colorName && product.colorImages && (
+              <span className="absolute bottom-5 start-5 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-plum-800 shadow-sm">
+                {colorName}
+              </span>
+            )}
           </div>
           {images.length > 1 && (
-            <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar">
+            <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto">
               {images.map((src, k) => (
                 <button
-                  key={k}
+                  key={`${src}-${k}`}
                   type="button"
                   onClick={() => goTo(k)}
                   aria-label={`${t("photo_of")} ${k + 1}`}
@@ -132,7 +161,7 @@ export function ProductDetail({ slug }: { slug: string }) {
           </div>
 
           <div className="mt-6 space-y-5">
-            {product.colors.length > 0 && <ColorPicker name="pd" options={product.colors} value={color} onChange={setColor} />}
+            {product.colors.length > 0 && <ColorPicker name="pd" options={product.colors} value={color} onChange={changeColor} />}
             <div ref={sizeRef}>
               <SizePicker
                 name="pd"
@@ -156,12 +185,14 @@ export function ProductDetail({ slug }: { slug: string }) {
 
           {product.inStock ? (
             <div className="mt-7 flex flex-col gap-3">
-              <button type="button" onClick={onAdd} className="rounded-full bg-plum py-4 text-base font-bold text-white shadow-lift transition duration-200 hover:-translate-y-0.5 hover:bg-plum-800">
-                {t("add_to_cart")}
+              <button type="button" onClick={onOrder} className="flex items-center justify-center gap-2 rounded-full bg-[#1f7a4c] px-4 py-4 text-base font-bold text-white shadow-lift transition duration-200 hover:-translate-y-0.5 hover:bg-[#186640]">
+                <WhatsAppIcon />
+                <span>{orderLabel}</span>
               </button>
-              <button type="button" onClick={onWhatsApp} className="flex items-center justify-center gap-2 rounded-full bg-[#1f7a4c] py-4 text-base font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-[#186640]">
-                <WhatsAppIcon /> {t("order_whatsapp")}
+              <button type="button" onClick={onAdd} className="flex items-center justify-center gap-2 rounded-full bg-plum py-3.5 text-base font-bold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-plum-800">
+                <BagIcon /> {t("add_to_cart")}
               </button>
+              <p className="text-center text-xs text-ink-soft">{t("order_hint")}</p>
             </div>
           ) : (
             <div className="mt-7 space-y-3">
@@ -216,7 +247,24 @@ export function ProductDetail({ slug }: { slug: string }) {
         </section>
       )}
 
+      {/* Mobile: fixed bar at the bottom of the screen */}
+      {product.inStock && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-plum/15 bg-glass/95 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-8px_24px_-12px_rgba(74,47,80,0.45)] backdrop-blur-md md:hidden">
+          <div className="flex gap-2">
+            <button type="button" onClick={onOrder} className="flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full bg-[#1f7a4c] px-3 py-3 text-sm font-bold text-white">
+              <WhatsAppIcon width={18} height={18} className="shrink-0" />
+              <span className="truncate">{orderLabel}</span>
+            </button>
+            <button type="button" onClick={onAdd} aria-label={t("add_to_cart")} className="flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-plum px-4 py-3 text-sm font-bold text-white">
+              <BagIcon width={18} height={18} />
+              <span className="hidden min-[400px]:inline">{t("add_to_cart")}</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       <SizeGuideModal open={guide} onClose={() => setGuide(false)} />
     </div>
   );
 }
+

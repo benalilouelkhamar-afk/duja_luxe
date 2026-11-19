@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import type { Product } from "@/data/products";
+import { colors, imagesFor, type ColorId, type Product } from "@/data/products";
 import { useCart } from "@/lib/cart";
 import { useLang } from "@/lib/i18n";
 import { Badges } from "./Badges";
@@ -14,8 +14,11 @@ export function ProductCard({ product, priority = false }: { product: Product; p
   const { t, tr } = useLang();
   const { add, setDrawerOpen } = useCart();
   const [quick, setQuick] = useState(false);
+  // color picked on the card (only for products that have a photo per color)
+  const [color, setColor] = useState<ColorId | null>(null);
   const href = `/produit/${product.slug}`;
   const name = tr(product.name);
+  const src = color ? imagesFor(product, color)[0] : product.images[0];
 
   const onAdd = () => {
     // Only one possible choice → add straight away, otherwise ask for size/color
@@ -29,12 +32,13 @@ export function ProductCard({ product, priority = false }: { product: Product; p
     <article className="group glass flex h-full flex-col rounded-[22px] p-2.5 transition duration-300 hover:-translate-y-1 hover:shadow-lift sm:p-3">
       <Link href={href} className="relative block aspect-[4/5] overflow-hidden rounded-2xl bg-[#efe3f1]" tabIndex={-1} aria-hidden>
         <ProductImage
-          src={product.images[0]}
+          key={src}
+          src={src}
           alt=""
           label={name}
           priority={priority}
           sizes="(min-width:1280px) 230px, (min-width:768px) 30vw, 46vw"
-          className="transition duration-500 group-hover:scale-[1.04]"
+          className="animate-pop transition duration-500 group-hover:scale-[1.04]"
         />
         <Badges product={product} className="absolute start-2 top-2" />
       </Link>
@@ -44,6 +48,26 @@ export function ProductCard({ product, priority = false }: { product: Product; p
             {name}
           </Link>
         </h3>
+        {product.colorImages && product.colors.length > 1 && (
+          <div className="-mx-0.5 flex flex-wrap" role="group" aria-label={t("color")}>
+            {product.colors.map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setColor(c)}
+                aria-pressed={color === c}
+                aria-label={tr(colors[c].label)}
+                title={tr(colors[c].label)}
+                className="grid size-7 place-items-center rounded-full"
+              >
+                <span
+                  className={`block size-4.5 rounded-full ring-1 ring-black/15 transition ${color === c ? "ring-2 ring-plum ring-offset-2" : ""}`}
+                  style={{ background: colors[c].hex }}
+                />
+              </button>
+            ))}
+          </div>
+        )}
         <div className="min-h-7">
           <PriceTag product={product} />
         </div>
@@ -64,7 +88,7 @@ export function ProductCard({ product, priority = false }: { product: Product; p
           </button>
         </div>
       </div>
-      {quick && <QuickAdd product={product} open={quick} onClose={() => setQuick(false)} />}
+      {quick && <QuickAdd product={product} initialColor={color} open={quick} onClose={() => setQuick(false)} />}
     </article>
   );
 }

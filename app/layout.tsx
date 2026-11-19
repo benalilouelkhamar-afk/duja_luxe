@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FloatingActions } from "@/components/FloatingActions";
 import { CartDrawer } from "@/components/CartDrawer";
+import { OrderSheet } from "@/components/OrderSheet";
 import { SkipLink } from "@/components/SkipLink";
 
 const tajawal = Tajawal({
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Footer />
           <FloatingActions />
           <CartDrawer />
+          <OrderSheet />
         </Providers>
       </body>
     </html>

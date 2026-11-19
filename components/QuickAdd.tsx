@@ -9,10 +9,10 @@ import { ColorPicker, SizePicker } from "./OptionPickers";
 import { PriceTag } from "./PriceTag";
 
 /** Small sheet to choose color + size before adding from the product grid. */
-export function QuickAdd({ product, open, onClose }: { product: Product; open: boolean; onClose: () => void }) {
+export function QuickAdd({ product, initialColor = null, open, onClose }: { product: Product; initialColor?: ColorId | null; open: boolean; onClose: () => void }) {
   const { t, tr } = useLang();
   const { add, setDrawerOpen } = useCart();
-  const [color, setColor] = useState<ColorId | null>(product.colors[0] ?? null);
+  const [color, setColor] = useState<ColorId | null>(initialColor ?? product.colors[0] ?? null);
   const [size, setSize] = useState<string | null>(product.sizes.length === 1 ? product.sizes[0] : null);
   const [err, setErr] = useState(false);
 

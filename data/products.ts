@@ -46,6 +46,11 @@ export type Product = {
   sizes: string[];
   colors: ColorId[];
   images: string[];
+  /**
+   * Optional photos per color: when the client picks a color, the gallery shows these
+   * (e.g. { noir: ["/products/veste-noire.jpg"] }). Colors without an entry use `images`.
+   */
+  colorImages?: Partial<Record<ColorId, string[]>>;
   isNew: boolean;
   inStock: boolean;
   /** Shows the "كمية محدودة" badge */
@@ -61,19 +66,24 @@ export const products: Product[] = [
     category: "jackets",
     price: null, // TODO: price
     sizes: ["S", "M", "L", "XL"],
-    colors: ["noir", "marron", "bordeaux", "rose"],
+    colors: ["noir", "marron", "bordeaux"],
     images: [
       "/products/veste-cuir-duo-bordeaux-noir.jpg",
       "/products/veste-cuir-duo-noir-bordeaux.jpg",
       "/products/veste-cuir-duo-marron.jpg",
       "/products/veste-cuir-look.jpg",
     ],
+    colorImages: {
+      noir: ["/products/veste-cuir-noir.jpg", "/products/veste-cuir-duo-bordeaux-noir.jpg"],
+      marron: ["/products/veste-cuir-marron.jpg", "/products/veste-cuir-duo-marron.jpg"],
+      bordeaux: ["/products/veste-cuir-bordeaux.jpg", "/products/veste-cuir-duo-noir-bordeaux.jpg", "/products/veste-cuir-look.jpg"],
+    },
     isNew: true,
     inStock: true,
     limited: false,
     description: {
-      ar: "جاكيت جلد بقصة عصرية وسحاب أنيق، متوفرة بأربع ألوان ✨\nقطعة أساسية كتعطي لكل لوك لمسة راقية من الصباح حتى العشية.",
-      fr: "Veste en cuir à la coupe moderne et zip élégant, disponible en quatre couleurs ✨\nLa pièce essentielle qui rend chaque look chic, du matin au soir.",
+      ar: "جاكيت جلد بقصة عصرية وسحاب أنيق، متوفرة بعدة ألوان ✨\nقطعة أساسية كتعطي لكل لوك لمسة راقية من الصباح حتى العشية.",
+      fr: "Veste en cuir à la coupe moderne et zip élégant, disponible en plusieurs couleurs ✨\nLa pièce essentielle qui rend chaque look chic, du matin au soir.",
     },
   },
   {
@@ -241,13 +251,13 @@ export const products: Product[] = [
   {
     id: "p11",
     slug: "veste-rose-zippee",
-    name: { ar: "جاكيت وردية بسحاب", fr: "Veste rose zippée" },
+    name: { ar: "جاكيت وردية", fr: "Veste rose" },
     category: "jackets",
-    price: null, // TODO: price
+    price: 149, // seen on Instagram: "149dh"
     sizes: ["S", "M", "L"],
     colors: ["rose"],
     images: ["/products/veste-rose-zippee.jpg"],
-    isNew: true,
+    isNew: true, // "الأكثر طلباً" on Instagram
     inStock: true,
     limited: false,
     description: {
@@ -343,6 +353,10 @@ export const products: Product[] = [
     },
   },
 ];
+
+/** Photos to show for a product in a given color (falls back to the general photos). */
+export const imagesFor = (p: Product, color: ColorId | null) =>
+  (color && p.colorImages?.[color]?.length ? p.colorImages[color]! : p.images);
 
 export const getProduct = (slug: string) => products.find((p) => p.slug === slug);
 export const getProductById = (id: string) => products.find((p) => p.id === id);

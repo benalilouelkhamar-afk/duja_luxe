@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { settings } from "@/data/settings";
 import { useLang } from "@/lib/i18n";
@@ -13,6 +14,9 @@ export function FloatingActions() {
   const [open, setOpen] = useState(false);
   const [asked, setAsked] = useState<number[]>([]);
   const [showTop, setShowTop] = useState(false);
+  // product pages have a fixed order bar at the bottom on mobile → lift the floating buttons
+  const lifted = usePathname().startsWith("/produit/");
+  const bottom = lifted ? "bottom-24 md:bottom-4" : "bottom-4";
   const panelRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +47,7 @@ export function FloatingActions() {
   return (
     <>
       {/* Ask DUJA — bottom-left */}
-      <div className="fixed bottom-4 left-4 z-40 flex flex-col items-start gap-3">
+      <div className={`fixed ${bottom} left-4 z-40 flex flex-col items-start gap-3`}>
         {open && (
           <div
             ref={panelRef}
@@ -109,7 +113,7 @@ export function FloatingActions() {
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label={t("back_to_top")}
-        className={`fixed bottom-4 right-4 z-40 grid size-12 place-items-center rounded-full bg-glass text-plum-800 shadow-lift ring-1 ring-plum/20 transition duration-300 hover:-translate-y-0.5 ${
+        className={`fixed ${bottom} right-4 z-40 grid size-12 place-items-center rounded-full bg-glass text-plum-800 shadow-lift ring-1 ring-plum/20 transition duration-300 hover:-translate-y-0.5 ${
           showTop ? "opacity-100" : "pointer-events-none translate-y-3 opacity-0"
         }`}
         tabIndex={showTop ? 0 : -1}

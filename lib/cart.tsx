@@ -11,18 +11,25 @@ export type CartLine = {
   size: string;
   qty: number;
 };
+export type OrderItem = Omit<CartLine, "key">;
+
+/** What the "Commander maintenant" sheet is ordering: one product, or the whole cart. */
+export type OrderRequest = { items: OrderItem[]; fromCart: boolean };
 
 type Ctx = {
   lines: CartLine[];
   count: number;
   /** null when at least one item has no price */
   total: number | null;
-  add: (l: Omit<CartLine, "key">) => void;
+  add: (l: OrderItem) => void;
   setQty: (key: string, qty: number) => void;
   remove: (key: string) => void;
   clear: () => void;
   drawerOpen: boolean;
   setDrawerOpen: (v: boolean) => void;
+  order: OrderRequest | null;
+  openOrder: (o: OrderRequest) => void;
+  closeOrder: () => void;
 };
 
 const CartContext = createContext<Ctx | null>(null);
@@ -41,10 +48,22 @@ function load(): CartLine[] {
   }
 }
 
+/** Total in MAD, or null when at least one item has no price yet. */
+export function totalOf(items: OrderItem[]): number | null {
+  let total: number | null = 0;
+  for (const l of items) {
+    const p = getProductById(l.productId);
+    if (!p || p.price === null) return null;
+    total += p.price * l.qty;
+  }
+  return total;
+}
+
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [ready, setReady] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [order, setOrder] = useState<OrderRequest | null>(null);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- restore saved cart after hydration
@@ -61,7 +80,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [lines, ready]);
 
-  const add = useCallback((l: Omit<CartLine, "key">) => {
+  const add = useCallback((l: OrderItem) => {
     const key = `${l.productId}|${l.color ?? "-"}|${l.size}`;
     setLines((prev) => {
       const found = prev.find((x) => x.key === key);
@@ -77,21 +96,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const remove = useCallback((key: string) => setLines((prev) => prev.filter((x) => x.key !== key)), []);
   const clear = useCallback(() => setLines([]), []);
 
-  const { count, total } = useMemo(() => {
-    let count = 0;
-    let total: number | null = 0;
-    for (const l of lines) {
-      count += l.qty;
-      const p = getProductById(l.productId);
-      if (!p || p.price === null) total = null;
-      else if (total !== null) total += p.price * l.qty;
-    }
-    return { count, total };
-  }, [lines]);
+  const openOrder = useCallback((o: OrderRequest) => {
+    setDrawerOpen(false);
+    setOrder(o);
+  }, []);
+  const closeOrder = useCallback(() => setOrder(null), []);
+
+  const { count, total } = useMemo(
+    () => ({ count: lines.reduce((n, l) => n + l.qty, 0), total: totalOf(lines) }),
+    [lines]
+  );
 
   return (
     <CartContext.Provider
-      value={{ lines, count, total, add, setQty, remove, clear, drawerOpen, setDrawerOpen }}
+      value={{ lines, count, total, add, setQty, remove, clear, drawerOpen, setDrawerOpen, order, openOrder, closeOrder }}
     >
       {children}
     </CartContext.Provider>
@@ -103,3 +121,7 @@ export function useCart() {
   if (!ctx) throw new Error("useCart must be used inside CartProvider");
   return ctx;
 }
+
+/** Cart lines → order items (drops the internal key). */
+export const toItems = (lines: CartLine[]): OrderItem[] =>
+  lines.map((l) => ({ productId: l.productId, color: l.color, size: l.size, qty: l.qty }));

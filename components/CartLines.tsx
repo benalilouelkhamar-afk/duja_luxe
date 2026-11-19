@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { colors, getProductById } from "@/data/products";
+import { colors, getProductById, imagesFor } from "@/data/products";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
 import { useLang } from "@/lib/i18n";
@@ -24,7 +24,7 @@ export function CartLines({ onNavigate }: { onNavigate?: () => void }) {
               onClick={onNavigate}
               className="relative aspect-[4/5] w-20 shrink-0 overflow-hidden rounded-2xl bg-mauve-200"
             >
-              <ProductImage src={p.images[0]} alt={tr(p.name)} label={tr(p.name)} sizes="80px" />
+              <ProductImage src={imagesFor(p, l.color)[0]} alt={tr(p.name)} label={tr(p.name)} sizes="80px" />
             </Link>
             <div className="flex min-w-0 flex-1 flex-col gap-1">
               <div className="flex items-start justify-between gap-2">

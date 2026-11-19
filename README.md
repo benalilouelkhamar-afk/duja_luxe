@@ -2,6 +2,15 @@
 
 Maquette de boutique pour **DUJA LUXE ✨** (@duja.luxe, Bouznika). Next.js 16 (App Router) + TypeScript + Tailwind CSS 4. Pas de backend : les commandes partent sur **WhatsApp** avec un message pré-rempli, paiement à la livraison.
 
+### Parcours de commande
+
+1. Sur la fiche produit, la cliente choisit couleur et taille, puis appuie sur **اطلبي الآن / Commander maintenant** (grand bouton vert avec l'icône WhatsApp). « Ajouter au panier » est juste en dessous ; sur mobile, les deux boutons sont aussi dans la barre fixe en bas de l'écran.
+2. Elle remplit nom, téléphone, ville et adresse, puis appuie sur **Commander maintenant · 149 DH** (le total s'affiche quand le prix est connu).
+3. WhatsApp s'ouvre sur le numéro de la boutique avec toute la commande écrite et une référence (ex. `DL-K3F9Q`). Elle n'a plus qu'à appuyer sur **Envoyer**.
+4. Le site affiche « شكراً Salma! / Merci Salma ! » avec la référence, et un bouton **Rouvrir WhatsApp** si WhatsApp ne s'est pas ouvert.
+
+Depuis le panier (tiroir ou page `/cart`), « Commander maintenant » ouvre le même formulaire, puis WhatsApp, et vide le panier.
+
 > ⚠️ C'est une **démo privée** : le site est en `noindex` (invisible sur Google) tant que `allowIndexing: false` dans `data/settings.ts`. Ne pas le publier avant l'accord de la propriétaire.
 
 ## Lancer en local
@@ -35,6 +44,7 @@ Dans `data/products.ts`, copier un bloc `{ ... }` du tableau `products` et chang
 - `name` et `description` en `ar` et `fr` (dans la description, `\n` = retour à la ligne) ;
 - `category` : `jackets`, `manteaux`, `ensembles`, `hauts`, `jupes` ou `robes` ;
 - `sizes` (ex. `["S", "M", "L"]`), `colors` (ids du tableau `colors` en haut du fichier) ;
+- `colorImages` (facultatif) : une photo par couleur, ex. `colorImages: { noir: ["/products/veste-noire.jpg"] }`. Quand la cliente choisit la couleur (fiche produit ou petits ronds sur la carte), la photo change ;
 - `isNew` (badge « جديد » + bande « Dispo الآن »), `limited` (« كمية محدودة »), `inStock: false` (« نفذت الكمية »).
 
 Les produits marqués `// DEMO ITEM` sont des exemples inventés : **à supprimer** avant la mise en ligne.
@@ -56,7 +66,7 @@ Si une photo manque ou ne se charge pas, un joli carré lilas avec le nom du pro
 
 ### Changer le numéro WhatsApp
 
-Dans `data/settings.ts` → `contact.whatsapp` : format international, chiffres seulement. `0775354815` → `"212775354815"`. Mettre aussi `whatsappDisplay` (affichage page contact).
+Dans `data/settings.ts` → `contact.whatsapp` : format international, chiffres seulement. `06 51 50 82 57` → `"212651508257"` (numéro actuel). Mettre aussi `whatsappDisplay` (affichage page contact).
 
 ### Livraison, paiement, échange
 

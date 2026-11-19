@@ -6,7 +6,6 @@
  *  • images: files in /public/products (first image = main photo).
  *    An empty list (or a missing file) shows an elegant lilac placeholder.
  *  • colors: ids from the `colors` table below.
- *  • Items marked  // DEMO ITEM  are fake examples: delete them before going live.
  * ─────────────────────────────────────────────────────────────
  */
 import type { Bilingual, CategoryId } from "./settings";
@@ -256,100 +255,81 @@ export const products: Product[] = [
     price: 149, // seen on Instagram: "149dh"
     sizes: ["S", "M", "L"],
     colors: ["rose"],
-    images: ["/products/veste-rose-zippee.jpg"],
+    images: ["/products/veste-rose-cuir.jpg"],
     isNew: true, // "الأكثر طلباً" on Instagram
     inStock: true,
     limited: false,
     description: {
-      ar: "جاكيت وردية قصيرة بسحاب، ناعمة ومريحة.\nلوك سبور شيك مثالي للنهار.",
-      fr: "Veste rose courte zippée, douce et confortable.\nUn look sport chic idéal pour la journée.",
+      ar: "جاكيت وردية قصيرة بسحاب ولمسة جلد، لون ناعم وأنثوي 🌸\nكتجي زوينة مع الجين ومع الجيب، لوك شيك فكل وقت.",
+      fr: "Veste rose courte zippée effet cuir, une couleur douce et féminine 🌸\nSublime avec un jean ou une jupe, chic à toute heure.",
     },
   },
-
-  // ── DEMO ITEMS (fake examples to fill the grid — delete before going live) ──
   {
-    id: "demo1", // DEMO ITEM
+    id: "p12",
     slug: "blouse-satin",
-    name: { ar: "بلوزة ساتان", fr: "Blouse en satin" },
+    name: { ar: "قميص ساتان", fr: "Chemise en satin" },
     category: "hauts",
-    price: 199,
+    price: null, // TODO: price
     sizes: ["S", "M", "L"],
-    colors: ["beige", "noir"],
-    images: [],
+    colors: ["beige"],
+    images: ["/products/blouse-satin-beige.jpg"],
+    isNew: true,
+    inStock: true,
+    limited: false,
+    description: {
+      ar: "قميص ساتان بيج لامع بلمسة ناعمة ✨\nأناقة بسيطة للخدمة وللخرجات، كيمشي مع الجيب والسروال.",
+      fr: "Chemise en satin beige, fluide et lumineuse ✨\nUne élégance simple, au bureau comme en soirée.",
+    },
+  },
+  {
+    id: "p13",
+    slug: "jupe-cuir",
+    name: { ar: "جيب جلد ميدي", fr: "Jupe midi effet cuir" },
+    category: "jupes",
+    price: null, // TODO: price
+    sizes: ["S", "M", "L"],
+    colors: ["marron"],
+    images: ["/products/jupe-cuir-marron.jpg"],
     isNew: false,
     inStock: true,
     limited: false,
     description: {
-      ar: "بلوزة ساتان لامعة بلمسة ناعمة.\nأناقة بسيطة للخدمة وللخرجات.",
-      fr: "Blouse en satin fluide et lumineuse.\nUne élégance simple, au bureau comme en soirée.",
+      ar: "جيب ميدي بلمسة جلد مارون وقصة واسعة شوية.\nكتتنسق مع الجاكيتات والقمجان ديال المجموعة.",
+      fr: "Jupe midi effet cuir marron, coupe légèrement évasée.\nAssortie aux vestes et chemises de la collection.",
     },
   },
   {
-    id: "demo2", // DEMO ITEM
+    id: "p14",
     slug: "jupe-midi-plissee",
     name: { ar: "جيب ميدي بليسي", fr: "Jupe midi plissée" },
     category: "jupes",
-    price: 229,
+    price: null, // TODO: price
     sizes: ["S", "M", "L"],
-    colors: ["beige", "noir"],
-    images: [],
+    colors: ["beige"],
+    images: ["/products/jupe-plissee-beige.jpg"],
     isNew: true,
     inStock: true,
     limited: false,
     description: {
-      ar: "جيب ميدي بليسي كتتحرك معاك بخفة.\nمثالية مع البلوزات والجاكيتات القصيرة.",
-      fr: "Jupe midi plissée qui bouge avec vous.\nParfaite avec une blouse ou une veste courte.",
+      ar: "جيب ميدي بليسي بيج كتتحرك معاك بخفة.\nمثالية مع القميص الساتان ولا الجاكيت القصيرة.",
+      fr: "Jupe midi plissée beige qui bouge avec vous.\nParfaite avec la chemise en satin ou une veste courte.",
     },
   },
   {
-    id: "demo3", // DEMO ITEM
-    slug: "jupe-cuir",
-    name: { ar: "جيب جلد", fr: "Jupe effet cuir" },
-    category: "jupes",
-    price: 249,
-    sizes: ["S", "M", "L"],
-    colors: ["noir", "marron"],
-    images: [],
-    isNew: false,
-    inStock: false,
-    limited: false,
-    description: {
-      ar: "جيب قصيرة بلمسة جلد وقصة مستقيمة.\nكتتنسق مع الجاكيتات ديال المجموعة.",
-      fr: "Jupe courte effet cuir à coupe droite.\nAssortie aux vestes de la collection.",
-    },
-  },
-  {
-    id: "demo4", // DEMO ITEM
-    slug: "robe-midi",
-    name: { ar: "فستان ميدي", fr: "Robe midi" },
+    id: "p15",
+    slug: "robe-fleurie",
+    name: { ar: "فستان طويل بالورد", fr: "Robe longue fleurie" },
     category: "robes",
-    price: 329,
+    price: null, // TODO: price
     sizes: ["S", "M", "L", "XL"],
-    colors: ["bordeaux", "noir"],
-    images: [],
+    colors: ["rose"],
+    images: ["/products/robe-fleurie-rose.jpg"],
     isNew: true,
     inStock: true,
-    limited: true,
-    description: {
-      ar: "فستان ميدي بقصة كترسم الجسم.\nأنيق للمناسبات والعشيات.",
-      fr: "Robe midi ajustée qui épouse la silhouette.\nChic pour les occasions et les soirées.",
-    },
-  },
-  {
-    id: "demo5", // DEMO ITEM
-    slug: "robe-longue",
-    name: { ar: "فستان طويل", fr: "Robe longue" },
-    category: "robes",
-    price: 389,
-    sizes: ["S", "M", "L", "XL"],
-    colors: ["rose", "beige"],
-    images: [],
-    isNew: false,
-    inStock: true,
     limited: false,
     description: {
-      ar: "فستان طويل خفيف بكمام واسعين.\nراحة وأناقة فقطعة وحدة.",
-      fr: "Robe longue fluide à manches amples.\nConfort et élégance en une seule pièce.",
+      ar: "فستان طويل وردي بالورد، قصة كروازي وحزام فالخصر 🌸\nخفيف وأنيق للنهار وللمناسبات.",
+      fr: "Robe longue rose à fleurs, col cache-cœur et taille ceinturée 🌸\nLégère et élégante, de jour comme pour les occasions.",
     },
   },
 ];

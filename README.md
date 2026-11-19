@@ -47,7 +47,6 @@ Dans `data/products.ts`, copier un bloc `{ ... }` du tableau `products` et chang
 - `colorImages` (facultatif) : une photo par couleur, ex. `colorImages: { noir: ["/products/veste-noire.jpg"] }`. Quand la cliente choisit la couleur (fiche produit ou petits ronds sur la carte), la photo change ;
 - `isNew` (badge « جديد » + bande « Dispo الآن »), `limited` (« كمية محدودة »), `inStock: false` (« نفذت الكمية »).
 
-Les produits marqués `// DEMO ITEM` sont des exemples inventés : **à supprimer** avant la mise en ligne.
 
 ### Fixer un prix
 
@@ -98,7 +97,7 @@ vercel        # aperçu
 vercel --prod # production
 ```
 
-**Mise en ligne réelle** (après accord de Duja) : mettre le domaine dans `settings.siteUrl`, passer `allowIndexing: true`, supprimer les `// DEMO ITEM`, puis ajouter le domaine dans Vercel → *Settings → Domains*.
+**Mise en ligne réelle** (après accord de Duja) : mettre le domaine dans `settings.siteUrl`, passer `allowIndexing: true`, puis ajouter le domaine dans Vercel → *Settings → Domains*.
 
 ## Structure
 

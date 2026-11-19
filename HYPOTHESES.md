@@ -17,8 +17,8 @@ Tout ce qui a été supposé pour la démo. Chaque point se change dans `data/se
 - [ ] **Veste courte** (« كمية محدودة ») : la photo choisie est la veste marron courte ceinturée.
 - [ ] **T-shirt** : la seule photo de haut est un t-shirt rayé à manches longues (couleur mise : blanc).
 - [ ] **Parka** : couleur mise « kaki ».
-- [ ] **4 pièces en plus**, vues sur les photos mais absentes de la liste : veste cuir bicolore bordeaux, veste camel à poches, chemise rose, **veste rose (149 DH)**. Noms, tailles et couleurs à confirmer.
-- [ ] **5 articles DEMO** (blouse, 2 jupes, 2 robes) avec prix inventés et sans photo : à supprimer (`// DEMO ITEM`). Je n'ai pas ajouté de pantalon de démo, car il n'y a pas de catégorie « سراويل » dans la liste des filtres.
+- [ ] **4 pièces en plus**, vues sur les photos mais absentes de la liste : veste cuir bicolore bordeaux, veste camel à poches, chemise rose, **veste rose (149 DH, nouvelle photo)**. Noms, tailles et couleurs à confirmer.
+- [ ] **4 nouvelles pièces** ajoutées avec leurs photos : chemise en satin beige, jupe midi effet cuir marron, jupe midi plissée beige, robe longue fleurie rose. Prix, tailles et couleurs à confirmer. Plus aucun article de démo dans la boutique.
 - [ ] Tailles et couleurs exactes de chaque pièce.
 - [ ] Deux captures du zip (`19_…` et `21_…`) étaient des captures de la grille Instagram, pas des photos produit : non utilisées.
 
